@@ -25,22 +25,19 @@
     const esp32IP = "http://192.168.0.89";  // ESP32의 실제 IP 주소로 수정 필요
 
     function getDistance() {
-      fetch(esp32IP)
-        .then(response => response.text())
-        .then(data => {
-          // 응답 데이터에서 거리 값을 추출
-          const distanceText = data.split(":")[1].trim();  // "Distance: <value> cm"
-          const distance = distanceText.split(" ")[0];  // 거리 값만 추출
-          console.log(distance);
+  fetch(esp32IP, { timeout: 5000 })  // 5초 동안 응답 대기
+    .then(response => response.text())
+    .then(data => {
+      const distanceText = data.split(":")[1].trim();
+      const distance = distanceText.split(" ")[0];
+      document.getElementById("distance").textContent = `${distance} cm`;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById("distance").textContent = "Error retrieving data";
+    });
+}
 
-          // HTML에 거리 값을 표시
-          document.getElementById("distance").textContent = `${distance} cm`;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          document.getElementById("distance").textContent = "Error retrieving data";
-        });
-    }
 
     // 2초마다 거리 값을 갱신
     setInterval(getDistance, 2000);
