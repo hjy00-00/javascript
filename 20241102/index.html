@@ -31,6 +31,7 @@
           // 응답 데이터에서 거리 값을 추출
           const distanceText = data.split(":")[1].trim();  // "Distance: <value> cm"
           const distance = distanceText.split(" ")[0];  // 거리 값만 추출
+          console.log(distance);
 
           // HTML에 거리 값을 표시
           document.getElementById("distance").textContent = `${distance} cm`;
