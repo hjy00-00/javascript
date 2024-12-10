@@ -1,93 +1,48 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>함지윤의 이력서</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distance Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #distance {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+  </style>
 </head>
-<body>    
-    <div class="wrapper">
-        <h1>함지윤의 이력서</h1> 
-        
-    
-        <section id="my_info">
-            <h2>My info</h2> 
-            <img src="images/함지윤.jpg" alt="얼굴 사진" />
-            <table>
-                <tbody>
-                    <tr id="myname">
-                        <th>이름</th>
-                        <td>함지윤</td>
-                    </tr>
-                    <tr>
-                        <th>직업</th>
-                        <td>개발자</td>
-                    </tr>
-                    <tr>
-                        <th>나이</th>
-                        <td>28</td>
-                    </tr>
-                    <tr>
-                        <th>거주지</th>
-                        <td>부산</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+<body>
+  <h1>Distance Measurement</h1>
+  <p>Distance: <span id="distance">Loading...</span></p>
 
-        <section id=""about>
-            <h2>About</h2>
-            <p>개발자가 되어서 다 패버릴거야. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consequat placerat tellus ut euismod. Integer dignissim molestie sem ut congue. Vestibulum aliquet nibh eget augue dapibus, molestie commodo eros sagittis. Donec interdum pretium rhoncus. Aenean lobortis erat ante, quis imperdiet sapien cursus ut. Sed pretium porttitor odio id tristique. Donec accumsan magna tellus, eget elementum felis eleifend a. Vivamus tempus leo sed turpis malesuada, et sodales justo sagittis. Cras pharetra nisl eros, in aliquet quam congue vitae. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque pharetra mi ac tortor commodo, quis aliquet dui porta. Integer imperdiet accumsan dui eget imperdiet. Nulla cursus sed metus posuere fringilla. Sed et ante lectus.</p>   
-        </section>
-        
-        <section id="contact">
-            <h2>Contact</h2>
-            <ul>
-                <li>
-                    <a href="tel:0100000000">010-000-0000</a>
-                </li>
-                <li>
-                    <a href="mailto:mail@mail.com" target="_blank">mail@mail.com</a>
-                </li>
-                <li>
-                    <a href="https://facebook.com/myfacebook" target="_blank">@myfacebook</a>
-                </li>
-                <li>
-                    <a href="https://naver.blog.com/myblog" target="_blank">@myblog</a>
-                    </li>
-            </ul>  
-        </section>
-        
-        <section id="skill">
-            <h2>Skills</h2>
-            <ol>
-                <li>C#</li>
-                <li>Unity</li>
-                <li>C</li>
-                <li>CAD</li>
-                <li>3D MAX</li>
-            </ol>
-        </section>
-        
-        <section id="project">
-            <h2>Projects</h2>
-            <ol>
-                <li>
-                    <h3>재밌는 앱</h3>
-                    <video src="movie.mp4" controls></video>
-                    <p>Integer imperdiet accumsan dui eget imperdiet. Nulla cursus sed metus posuere fringilla.</p>
-                    <a href="https://mysite.com" target="_blank">mysite.com</a>
-                </li>
-                <li>
-                    <h3>더 재밌는 사이트</h3>
-                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/7vedHzJu-H0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <p>Integer imperdiet accumsan dui eget imperdiet. Nulla cursus sed metus posuere fringilla.</p>
-                    <a href="https://mysite2.com" target="_blank">mysite2.com</a>
-                </li>
-            </ol>    
-        </section>
-    </div>
-    
+  <script>
+    // ESP32의 IP 주소로 요청을 보냅니다.
+    const esp32IP = "http://192.168.0.89";  // ESP32의 실제 IP 주소로 수정 필요
 
+    function getDistance() {
+      fetch(esp32IP)
+        .then(response => response.text())
+        .then(data => {
+          // 응답 데이터에서 거리 값을 추출
+          const distanceText = data.split(":")[1].trim();  // "Distance: <value> cm"
+          const distance = distanceText.split(" ")[0];  // 거리 값만 추출
+
+          // HTML에 거리 값을 표시
+          document.getElementById("distance").textContent = `${distance} cm`;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("distance").textContent = "Error retrieving data";
+        });
+    }
+
+    // 2초마다 거리 값을 갱신
+    setInterval(getDistance, 2000);
+  </script>
 </body>
 </html>
