@@ -6,23 +6,19 @@
   <title>Distance Measurement</title>
   <script>
     async function fetchDistance() {
-  try {
-    const response = await fetch('http://192.168.234.67/');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      try {
+        const response = await fetch('http://192.168.0.xxx/'); // 아두이노 IP 주소로 변경
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        console.log("Response received:", text); // 브라우저 콘솔에서 응답 확인
+        document.getElementById('distance').innerHTML = text.match(/<p>(.*?)<\/p>/)[1];
+      } catch (error) {
+        console.error("Fetch error:", error);
+        document.getElementById('distance').innerHTML = "Error fetching distance";
+      }
     }
-    const text = await response.text();
-    console.log("Response received:", text);
-    const match = text.match(/<p>(.*?)<\/p>/);
-    if (match) {
-      document.getElementById('distance').innerHTML = match[1];
-    } else {
-      throw new Error("Distance value not found in response");
-    }
-  } catch (error) {
-    console.error("Fetch error:", error);
-    document.getElementById('distance').innerHTML = "Error fetching distance";
-  }
 
     setInterval(fetchDistance, 1000); // 1초마다 업데이트
   </script>
