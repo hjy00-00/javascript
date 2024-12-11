@@ -7,7 +7,7 @@
   <script>
     async function fetchDistance() {
       try {
-        const response = await fetch('http://192.168.0.xxx/'); // 아두이노 IP 주소로 변경
+        const response = await fetch('http://192.168.0.89/'); // 아두이노 IP 주소로 변경
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
