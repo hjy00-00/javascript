@@ -6,10 +6,23 @@
   <title>Distance Measurement</title>
   <script>
     async function fetchDistance() {
-      const response = await fetch('http://192.168.234.67/');
-      const text = await response.text();
-      document.getElementById('distance').innerHTML = text.match(/<p>(.*?)<\/p>/)[1];
+  try {
+    const response = await fetch('http://192.168.234.67/');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const text = await response.text();
+    console.log("Response received:", text);
+    const match = text.match(/<p>(.*?)<\/p>/);
+    if (match) {
+      document.getElementById('distance').innerHTML = match[1];
+    } else {
+      throw new Error("Distance value not found in response");
+    }
+  } catch (error) {
+    console.error("Fetch error:", error);
+    document.getElementById('distance').innerHTML = "Error fetching distance";
+  }
 
     setInterval(fetchDistance, 1000); // 1초마다 업데이트
   </script>
