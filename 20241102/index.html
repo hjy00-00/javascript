@@ -6,7 +6,7 @@
   <title>Distance Measurement</title>
   <script>
     async function fetchDistance() {
-      const response = await fetch('http://192.168.0.89/');
+      const response = await fetch('http://192.168.234.67/');
       const text = await response.text();
       document.getElementById('distance').innerHTML = text.match(/<p>(.*?)<\/p>/)[1];
     }
