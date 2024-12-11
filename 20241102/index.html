@@ -3,47 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Distance Display</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+  <title>Distance Measurement</title>
+  <script>
+    async function fetchDistance() {
+      const response = await fetch('http://192.168.0.89/');
+      const text = await response.text();
+      document.getElementById('distance').innerHTML = text.match(/<p>(.*?)<\/p>/)[1];
     }
-    #distance {
-      font-size: 24px;
-      font-weight: bold;
-      color: #4CAF50;
-    }
-  </style>
+
+    setInterval(fetchDistance, 1000); // 1초마다 업데이트
+  </script>
 </head>
 <body>
-  <h1>Distance Measurement</h1>
-  <p>Distance: <span id="distance">Loading...</span></p>
-
-  <script>
-    // ESP32의 IP 주소로 요청을 보냅니다.
-    const esp32IP = "http://192.168.0.89";  // ESP32의 실제 IP 주소로 수정 필요
-
-    function getDistance() {
-  fetch(esp32IP, { timeout: 5000 })  // 5초 동안 응답 대기
-    .then(response => response.text())
-    .then(data => {
-      const distanceText = data.split(":")[1].trim();
-      const distance = distanceText.split(" ")[0];
-      document.getElementById("distance").textContent = `${distance} cm`;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById("distance").textContent = "Error retrieving data";
-    });
-}
-
-
-    // 2초마다 거리 값을 갱신
-    setInterval(getDistance, 2000);
-  </script>
-  <p>`${distance} cm`
-  </p>
-  
+  <h1>Ultrasonic Sensor Distance</h1>
+  <div id="distance">Loading...</div>
 </body>
 </html>
